@@ -1,0 +1,12 @@
+public class Main {
+   public Main() {
+   }
+
+   public static void main(String[] args) {
+      TextEditor textEditor = new TextEditor();
+      textEditor.setTitle("Text Editor");
+      textEditor.setSize(800, 600);
+      textEditor.setDefaultCloseOperation(3);
+      textEditor.setVisible(true);
+   }
+}
