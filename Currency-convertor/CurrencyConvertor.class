@@ -1,0 +1,74 @@
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+
+public class CurrencyConverter extends JFrame implements ActionListener {
+   private JLabel amountLabel;
+   private JLabel fromLabel;
+   private JLabel toLabel;
+   private JLabel resultLabel;
+   private JTextField amountTextField;
+   private JTextField resultTextField;
+   private JComboBox<String> fromComboBox;
+   private JComboBox<String> toComboBox;
+   private JButton jButton;
+   private final String[] CURRENCIES = new String[]{"INR", "USD", "EUR", "GBP", "CAD", "AUD", "JPY", "CHF", "CNY", "HKD", "KRW", "MXN", "NOK", "NZD", "SEK", "SGD", "THB", "TRY", "ZAR"};
+   private final double[] EXCHANGE_RATES = new double[]{1.0, 84.24, 89.57, 97.75, 62.45, 56.33, 0.523, 90.53, 13.52, 12.21, 0.07, 5.78, 7.35, 2.44, 8.07, 59.78, 3.09, 19.85, 5.54};
+   Border blackLine;
+
+   public CurrencyConverter() {
+      this.blackLine = BorderFactory.createLineBorder(Color.black);
+      JPanel panel = new JPanel();
+      panel.setLayout(new GridLayout(5, 1, 20, 40));
+      panel.setBorder(this.blackLine);
+      panel.setBackground(new Color(240, 240, 240));
+      this.amountLabel = new JLabel("Amount:");
+      this.fromLabel = new JLabel("From:");
+      this.toLabel = new JLabel("To:");
+      this.resultLabel = new JLabel("Result:");
+      this.amountTextField = new JTextField();
+      this.resultTextField = new JTextField();
+      this.resultTextField.setEditable(false);
+      this.fromComboBox = new JComboBox(this.CURRENCIES);
+      this.toComboBox = new JComboBox(this.CURRENCIES);
+      this.jButton = new JButton("Convert Currency");
+      this.jButton.addActionListener(this);
+      panel.add(this.amountLabel);
+      panel.add(this.amountTextField);
+      panel.add(this.fromLabel);
+      panel.add(this.fromComboBox);
+      panel.add(this.toLabel);
+      panel.add(this.toComboBox);
+      panel.add(this.resultLabel);
+      panel.add(this.resultTextField);
+      this.add(panel, "Center");
+      this.add(this.jButton, "South");
+   }
+
+   public void actionPerformed(ActionEvent e) {
+      if (e.getSource() == this.jButton) {
+         try {
+            double amount = Double.parseDouble(this.amountTextField.getText());
+            int fromIndex = this.fromComboBox.getSelectedIndex();
+            int toIndex = this.toComboBox.getSelectedIndex();
+            double result = amount * this.EXCHANGE_RATES[fromIndex] / this.EXCHANGE_RATES[toIndex];
+            DecimalFormat df = new DecimalFormat("#.##");
+            this.resultTextField.setText(df.format(result));
+         } catch (NumberFormatException var9) {
+            JOptionPane.showMessageDialog(this, "Please Enter Valid Amount");
+         }
+      }
+
+   }
+}
