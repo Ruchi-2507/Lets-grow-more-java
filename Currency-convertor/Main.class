@@ -1,0 +1,21 @@
+import java.awt.Component;
+import javax.swing.JOptionPane;
+
+public class Main {
+   public Main() {
+   }
+
+   public static void main(String[] args) {
+      try {
+         CurrencyConverter currencyConverter = new CurrencyConverter();
+         currencyConverter.setTitle("Currency Converter App");
+         currencyConverter.setDefaultCloseOperation(3);
+         currencyConverter.setSize(500, 400);
+         currencyConverter.setLocationRelativeTo((Component)null);
+         currencyConverter.setVisible(true);
+      } catch (Exception var2) {
+         JOptionPane.showMessageDialog((Component)null, var2.getMessage());
+      }
+
+   }
+}
