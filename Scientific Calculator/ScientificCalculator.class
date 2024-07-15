@@ -1,0 +1,93 @@
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class ScientificCalculator extends JFrame implements ActionListener {
+   private static final long serialVersionUID = 1L;
+   private JTextField display = new JTextField("");
+   private JButton[] buttons;
+
+   public ScientificCalculator() {
+      super("Scientific Calculator");
+      this.display.setEditable(false);
+      this.getContentPane().add(this.display, "North");
+      JPanel buttonPanel = new JPanel();
+      buttonPanel.setLayout(new GridLayout(6, 5));
+      String[] buttonLabels = new String[]{"7", "8", "9", "/", "C", "4", "5", "6", "*", "sqrt", "1", "2", "3", "-", "1/x", "0", "+/-", ".", "+", "=", "sin", "cos", "tan", "log", "exp"};
+      this.buttons = new JButton[buttonLabels.length];
+
+      for(int i = 0; i < buttonLabels.length; ++i) {
+         this.buttons[i] = new JButton(buttonLabels[i]);
+         this.buttons[i].addActionListener(this);
+         buttonPanel.add(this.buttons[i]);
+      }
+
+      this.getContentPane().add(buttonPanel, "Center");
+   }
+
+   public void actionPerformed(ActionEvent event) {
+      String command = event.getActionCommand();
+      if (command.equals("C")) {
+         this.display.setText("");
+      } else if (command.equals("=")) {
+         String expression = this.display.getText();
+
+         try {
+            double result = this.evaluateExpression(expression);
+            this.display.setText(Double.toString(result));
+         } catch (IllegalArgumentException var7) {
+            this.display.setText(var7.getMessage());
+         }
+      } else {
+         double result;
+         double value;
+         if (command.equals("sqrt")) {
+            value = Double.parseDouble(this.display.getText());
+            result = Math.sqrt(value);
+            this.display.setText(Double.toString(result));
+         } else if (command.equals("1/x")) {
+            value = Double.parseDouble(this.display.getText());
+            result = 1.0 / value;
+            this.display.setText(Double.toString(result));
+         } else if (command.equals("+/-")) {
+            value = Double.parseDouble(this.display.getText());
+            result = -value;
+            this.display.setText(Double.toString(result));
+         } else if (command.equals("sin")) {
+            value = Double.parseDouble(this.display.getText());
+            result = Math.sin(value);
+            this.display.setText(Double.toString(result));
+         } else if (command.equals("cos")) {
+            value = Double.parseDouble(this.display.getText());
+            result = Math.cos(value);
+            this.display.setText(Double.toString(result));
+         } else if (command.equals("tan")) {
+            value = Double.parseDouble(this.display.getText());
+            result = Math.tan(value);
+            this.display.setText(Double.toString(result));
+         } else if (command.equals("log")) {
+            value = Double.parseDouble(this.display.getText());
+            result = Math.log10(value);
+            this.display.setText(Double.toString(result));
+         } else if (command.equals("exp")) {
+            value = Double.parseDouble(this.display.getText());
+            result = Math.exp(value);
+            this.display.setText(Double.toString(result));
+         } else {
+            JTextField var10000 = this.display;
+            String var10001 = this.display.getText();
+            var10000.setText(var10001 + command);
+         }
+      }
+
+   }
+
+   private double evaluateExpression(String expression) {
+      ScientificCalculator$ExpressionEvaluator evaluator = new ScientificCalculator$ExpressionEvaluator(this);
+      return evaluator.evaluate(expression);
+   }
+}
