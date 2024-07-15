@@ -1,0 +1,11 @@
+public class Main {
+   public Main() {
+   }
+
+   public static void main(String[] args) {
+      ScientificCalculator scientificCalculator = new ScientificCalculator();
+      scientificCalculator.setDefaultCloseOperation(3);
+      scientificCalculator.setSize(400, 350);
+      scientificCalculator.setVisible(true);
+   }
+}
