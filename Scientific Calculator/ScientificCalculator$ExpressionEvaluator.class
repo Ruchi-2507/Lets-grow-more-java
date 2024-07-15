@@ -1,0 +1,100 @@
+class ScientificCalculator$ExpressionEvaluator {
+   private String expression;
+   private int index;
+
+   private ScientificCalculator$ExpressionEvaluator(ScientificCalculator var1) {
+   }
+
+   public double evaluate(String expression) {
+      this.expression = expression;
+      this.index = 0;
+      double result = this.parseExpression();
+      if (this.index != expression.length()) {
+         throw new IllegalArgumentException("Invalid expression");
+      } else {
+         return result;
+      }
+   }
+
+   private double parseExpression() {
+      double result = this.parseTerm();
+
+      while(this.index < this.expression.length()) {
+         char operator = this.expression.charAt(this.index);
+         if (operator != '+' && operator != '-') {
+            break;
+         }
+
+         ++this.index;
+         double operand = this.parseTerm();
+         if (operator == '+') {
+            result += operand;
+         } else {
+            result -= operand;
+         }
+      }
+
+      return result;
+   }
+
+   private double parseTerm() {
+      double result = this.parseFactor();
+
+      while(this.index < this.expression.length()) {
+         char operator = this.expression.charAt(this.index);
+         if (operator != '*' && operator != '/') {
+            break;
+         }
+
+         ++this.index;
+         double operand = this.parseFactor();
+         if (operator == '*') {
+            result *= operand;
+         } else {
+            result /= operand;
+         }
+      }
+
+      return result;
+   }
+
+   private double parseFactor() {
+      char ch = this.expression.charAt(this.index);
+      if (ch >= '0' && ch <= '9') {
+         return this.parseNumber();
+      } else if (ch == '(') {
+         ++this.index;
+         double result = this.parseExpression();
+         if (this.expression.charAt(this.index) != ')') {
+            throw new IllegalArgumentException("Mismatched parentheses");
+         } else {
+            ++this.index;
+            return result;
+         }
+      } else if (ch == '-') {
+         ++this.index;
+         return -this.parseFactor();
+      } else if (ch == '+') {
+         ++this.index;
+         return this.parseFactor();
+      } else {
+         throw new IllegalArgumentException("Invalid character: " + ch);
+      }
+   }
+
+   private double parseNumber() {
+      int startIndex;
+      for(startIndex = this.index; this.index < this.expression.length() && Character.isDigit(this.expression.charAt(this.index)); ++this.index) {
+      }
+
+      if (this.index < this.expression.length() && this.expression.charAt(this.index) == '.') {
+         ++this.index;
+
+         while(this.index < this.expression.length() && Character.isDigit(this.expression.charAt(this.index))) {
+            ++this.index;
+         }
+      }
+
+      return Double.parseDouble(this.expression.substring(startIndex, this.index));
+   }
+}
